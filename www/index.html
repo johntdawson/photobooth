@@ -36,18 +36,19 @@
   
       // Get image handle
       //
-      var photo = document.getElementById('photo');
+      var smallImage = document.getElementById('smallImage');
   
       // Unhide image elements
       //
-      photo.style.display = 'block';
+      smallImage.style.display = 'block';
   
       // Show the captured photo
       // The in-line CSS rules are used to resize the image
       //
-      photo.src = "data:image/jpeg;base64," + imageData;
+      smallImage.src = "data:image/jpeg;base64," + imageData;
     }
-    
+  
+  
     // A button will call this function
     //
     function capturePhotoEdit() {
@@ -197,7 +198,8 @@
     <section>
       <h2>Photo</h2>
       <button onclick="capturePhotoEdit();">Capture Photo</button>
-      <img style="display:none;width:600px;height:600px;" id="photo" src="" />
+      <img style="display:none;width:600px;height:600px;" id="smallImage" src="" />
+      <img style="display:none;" id="largeImage" src="" />      
     </section>
   </article>
   
