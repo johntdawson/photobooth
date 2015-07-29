@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="msapplication-tap-highlight" content="no">
+  <title>test3</title>
+  <link rel="stylesheet" href="./chui/chui-ios-3.8.10.css">
+  <script src="./chui/chocolatechip-3.8.11.js"></script>
+  <script src="./chui/chui-3.8.10.js"></script>
+  <script>
+    $(function() {
+      var fruitsData = [
+        {
+          name: "Apples",
+          data: ["Apple Juice", "Apple Pie"]
+        },
+        {
+          name: "Oranges",
+          data: ["Oranges Juice","Oranges Sherbet"]
+        },
+        {
+          name: "Bananas",
+          data: ["Banana Pudding","Banana Bread"]
+        },
+        {
+          name: "Mangos",
+          data: ["Mango Smoothie","Mango Ice Cream"]
+        }
+      ];
+      $.UISlideout({
+        dynamic: true, 
+        callback: function(li) {
+          var fruit = $(li).index();
+          renderChosenFruit(fruit);
+        }
+      });
+      var renderChosenFruit = function(fruit) {
+         $("h1").text(fruitsData[fruit].name);
+         $("#uses").empty();
+         fruitsData[fruit].data.forEach(function(use) {
+           $("#uses").append("<li><h3>" + use + "</h3></li>");
+         });
+      };
+      $.UISlideout.populate([
+        {apples:"Apples"},
+        {oranges:"Oranges"},
+        {bananas:"Bananas"},
+        {mangos:"Mangos"}
+      ]);
+    });
+  </script>
+</head>
+<body>
+  <nav>
+    <h1>Apples</h1>
+  </nav>
+  <article id="chosenFruit">
+    <section>
+      <ul class="list" id="uses">
+        <li>
+          <h3>Apple Juice</h3>
+        </li>
+        <li>
+          <h3>Apple Pie</h3>
+        </li>
+      </ul>
+    </section>
+  </article>
+</body>
+</html>

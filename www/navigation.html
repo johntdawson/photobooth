@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="msapplication-tap-highlight" content="no">
+  <title>test2</title>
+  <link rel="stylesheet" href="./chui/chui-ios-3.8.10.css">
+  <script src="./chui/chocolatechip-3.8.11.js"></script>
+  <script src="./chui/chui-3.8.10.js"></script>
+    <script>
+    $(function() {
+      var items = [
+        {
+          title: "Item One",
+          subtitle: "A very important item",
+          detail: "This is item one, so, whatever."
+        },
+        {
+          title: "Item Two",
+          subtitle: "Being number two is not that bad",
+          detail: "Well, item two is not item one. But that should be too discouraging."
+        },
+        {
+          title: "Item Three",
+          subtitle: "Better than nothing",
+          detail: "And this is the very last one. Guess that means boring."
+        }
+      ];
+      $.template.data["items"] = items;
+      $.template.repeater();
+      var detailTemplate = "<li><h3>[[= data.title]]</h3><h4>[[= data.subtitle]]</h4><p>[[= data.detail]]</p></li>";
+      var parsedDetail = $.template(detailTemplate);
+      $("#item-list").on("singletap", "li", function() {
+        var itemID = $(this).attr("data-id");
+        $("#detail-list").html(parsedDetail(items[itemID]));
+      });
+    });
+  </script>
+</head>
+<body>
+  <nav class="current">
+    <h1>test2</h1>
+  </nav>
+  <article class="current" id="main">
+    <section>
+      <h2>Items</h2>
+      <ul class="list" id="item-list" data-repeater="items" class="cloak">
+        <li class="comp" data-goto="detail" data-id="[[= $.template.index]]"">
+          <div>
+            <h3>[[= data.title]]</h3>
+          </div>
+          <aside><span class="nav"></span></aside>
+        </li>
+      </ul>
+    </section>
+  </article>
+  <nav class="next">
+    <button class="back">Back</button>
+    <h1>Detail</h1>
+  </nav>
+  <article id="detail" class="next">
+    <section>
+      <h2>Item</h2>
+      <ul class="list" id="detail-list">
+        <li>
+          <h3></h3>
+        </li>
+      </ul>
+    </section>
+  </article>
+</body>
+</html>
