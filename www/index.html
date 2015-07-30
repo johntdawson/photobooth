@@ -34,10 +34,7 @@
     function onPhotoDataSuccess(imageData) {
       // Uncomment to view the base64-encoded image data
       // console.log(imageData);
-  
-      // Remove any previous image
-      $("smallImage").remove();  
-  
+
       // Get image handle
       //
       var smallImage = document.getElementById('smallImage');
@@ -321,81 +318,85 @@
           var canvas = document.createElement("canvas");
           canvas.width = 824;
           canvas.height = 824;
-          canvas.id = "image1";
+          document.body.appendChild(canvas);
           // get the context
           var context1 = canvas.getContext("2d");
           // draw the image into the canvas
           context1.drawImage(img, 0, 0);
           
-          // get the image data object
-          var image = context1.getImageData(0, 0, 824, 824);
-          // get the image data values
-          var imageData = image.data,
-          length = imageData.length;
-          // set every fourth value to 0
-          for(var i=3; i < length; i+=4){
-            if ( (imageData[i-3] >= redLow && imageData[i-3] <= redHigh) && (imageData[i-2] >= greenLow && imageData[i-2] <= greenHigh) && (imageData[i-1] >= blueLow && imageData[i-1] <= blueHigh) ) {
-              imageData[i] = 0;
-            }
-          }
-          // after the manipulation, reset the data
-          image.data = imageData;
-          // and put the imagedata back to the canvas
-          context1.putImageData(image, 0, 0);
-          img = canvas.toDataURL();
           
-          c = Caman("#photo2", img, function () {
-            this.revert(false);
-            this.resize( {width: 824, height: 824} );
-            this.greyscale();
-            this.colorize("#003d79", 40);
-            this.contrast(15);
-            this.render();            
-          });
+
           
-          context1.clearRect(0, 0, canvas.width, canvas.height);
+          
+          //// get the image data object
+          //var image = context1.getImageData(0, 0, 824, 824);
+          //// get the image data values
+          //var imageData = image.data,
+          //length = imageData.length;
+          //// set every fourth value to 0
+          //for(var i=3; i < length; i+=4){
+          //  if ( (imageData[i-3] >= redLow && imageData[i-3] <= redHigh) && (imageData[i-2] >= greenLow && imageData[i-2] <= greenHigh) && (imageData[i-1] >= blueLow && imageData[i-1] <= blueHigh) ) {
+          //    imageData[i] = 0;
+          //  }
+          //}
+          //// after the manipulation, reset the data
+          //image.data = imageData;
+          //// and put the imagedata back to the canvas
+          //context1.putImageData(image, 0, 0);
+          //img = canvas.toDataURL();
+          
+          //c = Caman("#photo2", img, function () {
+          //  this.revert(false);
+          //  this.resize( {width: 824, height: 824} );
+          //  this.greyscale();
+          //  this.colorize("#003d79", 40);
+          //  this.contrast(15);
+          //  this.render();            
+          //});
+          
+          //context1.clearRect(0, 0, canvas.width, canvas.height);
           
           //console.log(canvas.toDataURL());
           
-          Caman.Event.listen(c, "processComplete", function (job) {
-            if (job.name=='contrast') {          
-              
-              var canvas = document.getElementById("composite");
-              canvas.width = 800;
-              canvas.height = 550;
-              var ctx = canvas.getContext("2d");
-              var background = new Image();
-              background.src = "img/background.jpg";
-              var logo = new Image();
-              logo.src = "img/vmware.png";          
-              var head = new Image();
-              var head = document.getElementById("photo2");
-              
-              // draw background image;
-              background.onload = function(){
-                ctx.drawImage(background, 0, 0);
-                // draw head
-                ctx.globalCompositeOperation = "source-over";
-                ctx.drawImage(head, 275, -265);
-                // draw text
-                ctx.font = "normal 25px 'Gotham-Light'";
-                ctx.fillStyle = "#ffffff";
-                ctx.fillText(line1, 35, 195);
-                // draw text
-                ctx.font = "bold 106px 'Gotham-Ultra'";
-                ctx.fillStyle = "#ffffff";
-                ctx.fillText(line2, 35, 285);
-                // draw text
-                ctx.font = "normal 25px 'Gotham-Light'";
-                ctx.fillStyle = "#ffffff";
-                ctx.fillText(line3,35,314);
-                // draw logo
-                ctx.drawImage(logo, 35, 503);
-              }
-              
-            }
-    
-          });
+          //Caman.Event.listen(c, "processComplete", function (job) {
+          //  if (job.name=='contrast') {          
+          //    
+          //    var canvas = document.getElementById("composite");
+          //    canvas.width = 800;
+          //    canvas.height = 550;
+          //    var ctx = canvas.getContext("2d");
+          //    var background = new Image();
+          //    background.src = "img/background.jpg";
+          //    var logo = new Image();
+          //    logo.src = "img/vmware.png";          
+          //    var head = new Image();
+          //    var head = document.getElementById("photo2");
+          //    
+          //    // draw background image;
+          //    background.onload = function(){
+          //      ctx.drawImage(background, 0, 0);
+          //      // draw head
+          //      ctx.globalCompositeOperation = "source-over";
+          //      ctx.drawImage(head, 275, -265);
+          //      // draw text
+          //      ctx.font = "normal 25px 'Gotham-Light'";
+          //      ctx.fillStyle = "#ffffff";
+          //      ctx.fillText(line1, 35, 195);
+          //      // draw text
+          //      ctx.font = "bold 106px 'Gotham-Ultra'";
+          //      ctx.fillStyle = "#ffffff";
+          //      ctx.fillText(line2, 35, 285);
+          //      // draw text
+          //      ctx.font = "normal 25px 'Gotham-Light'";
+          //      ctx.fillStyle = "#ffffff";
+          //      ctx.fillText(line3,35,314);
+          //      // draw logo
+          //      ctx.drawImage(logo, 35, 503);
+          //    }
+          //    
+          //  }
+          //
+          //});
           
         });
         
