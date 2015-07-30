@@ -51,10 +51,6 @@
 
       // composite image start
       
-      $("#render").remove();
-    
-      event.preventDefault();
-      
       // get values
       var line1 = "\u201C" + "Managing our cloud is a";
       var line2 = "SEAMLESS";
@@ -68,7 +64,7 @@
       
       // http://www.patrick-wied.at/blog/how-to-create-transparency-in-images-with-html5canvas
       // get the image
-      var img = smallImage.src;
+      var img = document.getElementById("photo");
       // create and customize the canvas
       var canvas = document.createElement("canvas");
       canvas.width = 824;
@@ -381,7 +377,7 @@
   </nav>
   <article id="preview" class="next">
     <section>
-      <p>Composite goes here</p>
+      <img id="photo" src="img/photo.jpg"/>
       <canvas id="photo2"></canvas>
       <canvas id="composite"></canvas>
     </section>
