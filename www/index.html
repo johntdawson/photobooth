@@ -37,8 +37,8 @@
   
       // Get image handle
       //
-      smallImage = document.getElementById('smallImage');
-  
+      var smallImage = document.getElementById('smallImage');
+
       // Unhide image elements
       //
       smallImage.style.display = 'block';
@@ -298,10 +298,6 @@
         
         $( "button.preview" ).on( "click", function() {
           
-          if (typeof ctx !== 'undefined') {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-          }
-          
           // get values
           var line1 = "\u201C" + "Managing our cloud is a";
           var line2 = "SEAMLESS";
@@ -315,8 +311,8 @@
           
           // http://www.patrick-wied.at/blog/how-to-create-transparency-in-images-with-html5canvas
           // get the image
-          //var img = document.getElementById("smallImage");
-          var img = smallImage;
+          var img = document.getElementById("smallImage");
+          //var img = document.getElementById("photo1");
           // create and customize the canvas
           var canvas = document.createElement("canvas");
           canvas.width = 824;
@@ -326,6 +322,7 @@
           var ctx = canvas.getContext("2d");
           // draw the image into the canvas
           ctx.drawImage(img, 0, 0);
+          ctx.restore();
           
           // get the image data object
           var image = ctx.getImageData(0, 0, 824, 824);
@@ -342,6 +339,7 @@
           image.data = imageData;
           // and put the imagedata back to the canvas
           ctx.putImageData(image, 0, 0);
+          ctx.restore();
           img = canvas.toDataURL();
           
           c = Caman("#photo2", img, function () {
@@ -388,7 +386,8 @@
                 ctx.fillStyle = "#ffffff";
                 ctx.fillText(line3,35,314);
                 // draw logo
-                ctx.drawImage(logo, 35, 503);                
+                ctx.drawImage(logo, 35, 503);
+                ctx.restore();
               }
               
             }
