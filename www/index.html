@@ -68,7 +68,7 @@
       
       // http://www.patrick-wied.at/blog/how-to-create-transparency-in-images-with-html5canvas
       // get the image
-      var img = smallImage;
+      var img = smallImage.src;
       // create and customize the canvas
       var canvas = document.createElement("canvas");
       canvas.width = 824;
@@ -381,6 +381,7 @@
   </nav>
   <article id="preview" class="next">
     <section>
+      <p>Composite goes here</p>
       <canvas id="photo2"></canvas>
       <canvas id="composite"></canvas>
     </section>
