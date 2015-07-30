@@ -48,101 +48,6 @@
       //
       smallImage.src = "data:image/jpeg;base64," + imageData;
       
-      $(window).load(function() {
-        
-          // get values
-          var line1 = "\u201C" + "Managing our cloud is a";
-          var line2 = "SEAMLESS";
-          var line3 = "experience, no new expertise required." + "\u201D";
-          var redLow = 0;
-          var redHigh = 50;
-          var greenLow = 200;
-          var greenHigh = 255;
-          var blueLow = 0;
-          var blueHigh = 50;             
-          
-          // http://www.patrick-wied.at/blog/how-to-create-transparency-in-images-with-html5canvas
-          // get the image
-          var img = document.getElementById("photo1");
-          // create and customize the canvas
-          var canvas = document.createElement("canvas");
-          canvas.width = 824;
-          canvas.height = 824;
-          canvas.id = "test1";
-          // get the context
-          var ctx = canvas.getContext("2d");
-          // draw the image into the canvas
-          ctx.drawImage(img, 0, 0);
-          
-          // get the image data object
-          var image = ctx.getImageData(0, 0, 824, 824);
-          // get the image data values
-          var imageData = image.data,
-          length = imageData.length;
-          // set every fourth value to 0
-          for(var i=3; i < length; i+=4){
-            if ( (imageData[i-3] >= redLow && imageData[i-3] <= redHigh) && (imageData[i-2] >= greenLow && imageData[i-2] <= greenHigh) && (imageData[i-1] >= blueLow && imageData[i-1] <= blueHigh) ) {
-              imageData[i] = 0;
-            }
-          }
-          // after the manipulation, reset the data
-          image.data = imageData;
-          // and put the imagedata back to the canvas
-          ctx.putImageData(image, 0, 0);
-          img = canvas.toDataURL();
-          
-          c = Caman("#photo2", img, function () {
-            this.resize( {width: 824, height: 824} );
-            this.greyscale();
-            this.colorize("#003d79", 40);
-            this.contrast(15);
-            this.render();            
-          });
-          
-          console.log(canvas.toDataURL());
-          
-          Caman.Event.listen(c, "processComplete", function (job) {
-            if (job.name=='contrast') {          
-              
-              var canvas = document.getElementById("composite");
-              canvas.width = 800;
-              canvas.height = 550;
-              var ctx = canvas.getContext("2d");
-              var background = new Image();
-              background.src = "img/background.jpg";
-              var logo = new Image();
-              logo.src = "img/vmware.png";          
-              var head = new Image();
-              var head = document.getElementById("photo2");
-              
-              // draw background image;
-              background.onload = function(){
-                ctx.drawImage(background, 0, 0);
-                // draw head
-                ctx.globalCompositeOperation = "source-over";
-                ctx.drawImage(head, 275, -265);
-                // draw text
-                ctx.font = "normal 25px 'Gotham-Light'";
-                ctx.fillStyle = "#ffffff";
-                ctx.fillText(line1, 35, 195);
-                // draw text
-                ctx.font = "bold 106px 'Gotham-Ultra'";
-                ctx.fillStyle = "#ffffff";
-                ctx.fillText(line2, 35, 285);
-                // draw text
-                ctx.font = "normal 25px 'Gotham-Light'";
-                ctx.fillStyle = "#ffffff";
-                ctx.fillText(line3,35,314);
-                // draw logo
-                ctx.drawImage(logo, 35, 503);                
-              }
-              
-            }
-    
-          });
-        
-      });      
-      
     }
   
     // Called when a photo is successfully retrieved
@@ -187,7 +92,7 @@
       var opts = {
          tabs : 5,
          //imagePath : "../icons-ios/",
-         icons : ["home", "camera", "text", "image", "share"],
+         icons : ["home", "camera", "text", "preview", "share"],
          labels : ["Start", "Photo", "Message", "Preview", "Share"],
          selected : 1
       };
@@ -264,10 +169,10 @@
     .tabbar > .text.selected > label {
       background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAABxElEQVR4nO3RQU7EMBQE0b4inGbg6GzCfsQmxEnXt6ql2tv/Jc4559zT+z6OkX0dP3kdH+3zrV/7sKK8rX1UUd7WPqgob2sf8wrClijtw/631/GxJ0r7sP8tyZ4o7cNeAUk2RGkf9ipIshlK+7ArQJKNUNqHXQWSbILSPuxKkGQDlPZhV4Mkw1Hah70DJBmM0j7sXSDJUJT2Ye8ESQaitA97N0gyDKV92CdAkkEo7cM+BZIMQWkf9kmQZABK+7BPgyRwlPZhGyAJGKV92BZIAkVpH7YJkgBR2odtgyQwlPZhCSBJ8nV8/ony+NqHpScILEFgCQJLEFiCwBIEliCwBIElCCxBYAkCSxBYgsAaB0LfuP+Ne/DJjfvfuAef3Lj/jXvwyY3739UH754gsASBJQgsQWAJAksQWILAGgfSniDtBy9+P+5/4x68+P24/4178OL34/5394emJwgsQWAJAksQWILAEgSWILDGgdA37n/jHnxy4/437sEnN+5/4x58cuP+d/XBuycILEFgCQJLEFiCwBIEliCwBIElCCxBYAkCSxBYgsASBJYgsASBJQgsQWAJAksQWILAEgSWILCcc865h/cL1yiGXYmMNgEAAAAASUVORK5CYII=);
     }  
-    .tabbar > .image > label {
+    .tabbar > .preview > label {
       background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjAiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0ibnVsbCIgaGVpZ2h0PSJudWxsIiB2aWV3Qm94PSIwIDAgNTAgNTAiIHN0eWxlPSJudWxsIiBmaWxsPSIjOWU5ZTllIiA+ICAgIDxwYXRoIHN0eWxlPSJ0ZXh0LWluZGVudDowO3RleHQtYWxpZ246c3RhcnQ7bGluZS1oZWlnaHQ6bm9ybWFsO3RleHQtdHJhbnNmb3JtOm5vbmU7YmxvY2stcHJvZ3Jlc3Npb246dGI7LWlua3NjYXBlLWZvbnQtc3BlY2lmaWNhdGlvbjpCaXRzdHJlYW0gVmVyYSBTYW5zIiBkPSJNIDQuNjg3NSA2IEMgMi4xNTQxNjY3IDYgMCA4LjAyNzA4MzMgMCAxMC41OTM3NSBDIDAgMTEuNzgyMjEyIDAuNjM4MDE1OTUgMTIuNjYyNTY1IDEuMTU2MjUgMTMuNjI1IEMgMS42NzQ0ODQgMTQuNTg3NDM1IDIuMDkzNzUgMTUuNTYxNzY1IDIuMDkzNzUgMTYgQyAyLjA5Mzc1IDE2LjQzODIzNSAxLjYyODc4OSAxNy44MzIzODMgMS4wOTM3NSAxOS40Mzc1IEMgMC41NTg3MTEwMiAyMS4wNDI2MTcgMCAyMi45NjA4MTEgMCAyNSBDIDAgMjcuMDM5MTg5IDAuNTU5MDA1NzQgMjguOTM5NzQ5IDEuMDkzNzUgMzAuNTMxMjUgQyAxLjYyODQ5NDMgMzIuMTIyNzUxIDIuMDkzNzUgMzMuNDg4ODg5IDIuMDkzNzUgMzQgQyAyLjA5Mzc1IDM0LjUxMTExMSAxLjcwMzc4NTcgMzUuNDU5NzI2IDEuMTg3NSAzNi40MDYyNSBDIDAuNjcxMjE0MzIgMzcuMzUyNzc0IDcuNDAxNDg2OGUtMTcgMzguMjE3Nzg4IDAgMzkuNDA2MjUgQyAwIDQxLjk3MjkxNyAyLjE1NDE2NjcgNDQgNC42ODc1IDQ0IEMgNS4yNzU1OTUyIDQ0IDUuODIzODM0OCA0My44NTE3NjggNi41IDQzLjY1NjI1IEMgNy4xNzYxNjUyIDQzLjQ2MDczMiA3Ljk2NDE0MDYgNDMuMjE2MjY1IDguNzUgNDIuOTY4NzUgQyAxMC4zMjE3MTkgNDIuNDczNzIgMTIuMDE2NjY3IDQyIDEzIDQyIEMgMTMuOTgzMzMzIDQyIDE0LjYxMzI0NCA0Mi4zNTU3NDcgMTUuNDA2MjUgNDIuODQzNzUgQyAxNi4xOTkyNTYgNDMuMzMxNzUzIDE3LjE2NjY2NyA0NCAxOC41IDQ0IEMgMTkuODMzMzMzIDQ0IDIwLjkzNTQzOSA0My4zOTgzMDMgMjEuOTY4NzUgNDIuOTA2MjUgQyAyMy4wMDIwNjEgNDIuNDE0MTk3IDIzLjk1NjQxIDQyIDI1IDQyIEMgMjYuMDQzNTkgNDIgMjYuNjYxMzIgNDIuMzU4NjM4IDI3LjQzNzUgNDIuODQzNzUgQyAyOC4yMTM2OCA0My4zMjg4NjIgMjkuMTY2NjY3IDQ0IDMwLjUgNDQgQyAzMS44MzMzMzMgNDQgMzMuMDYzODkgNDMuNDA4MzYzIDM0LjIxODc1IDQyLjkwNjI1IEMgMzUuMzczNjEgNDIuNDA0MTM3IDM2LjQ3MDM3IDQyIDM3IDQyIEMgMzcuNTI5NjMgNDIgMzkuMzMwMjI3IDQyLjQ3MDMxIDQxIDQyLjk2ODc1IEMgNDEuODM0ODg3IDQzLjIxNzk3IDQyLjY3NzQ2NiA0My40NjE5MDggNDMuNDA2MjUgNDMuNjU2MjUgQyA0NC4xMzUwMzQgNDMuODUwNTkyIDQ0LjcyNDQwNSA0NCA0NS4zMTI1IDQ0IEMgNDcuODQ1ODMzIDQ0IDUwIDQxLjk3MjkxNyA1MCAzOS40MDYyNSBDIDUwIDM4LjIxNzc4OCA0OS4zNjE5ODQgMzcuMzM3NDM1IDQ4Ljg0Mzc1IDM2LjM3NSBDIDQ4LjMyNTUxNiAzNS40MTI1NjUgNDcuOTA2MjUgMzQuNDM4MjM1IDQ3LjkwNjI1IDM0IEMgNDcuOTA2MjUgMzMuNTYxNzY1IDQ4LjM3MjU5MiAzMi4xMjYzODcgNDguOTA2MjUgMzAuNSBDIDQ5LjQzOTkwOCAyOC44NzM2MTMgNTAgMjYuOTUgNTAgMjUgQyA1MCAyMy4wNSA0OS40Mzk2MDMgMjEuMTc1MjU3IDQ4LjkwNjI1IDE5LjU2MjUgQyA0OC4zNzI4OTcgMTcuOTQ5NzQzIDQ3LjkwNjI1IDE2LjUxMTExMSA0Ny45MDYyNSAxNiBDIDQ3LjkwNjI1IDE1LjQ4ODg4OSA0OC4yOTYyMTQgMTQuNTQwMjc0IDQ4LjgxMjUgMTMuNTkzNzUgQyA0OS4zMjg3ODYgMTIuNjQ3MjI2IDUwIDExLjc4MjIxMiA1MCAxMC41OTM3NSBDIDUwIDguMDI3MDgzMyA0Ny44NDU4MzMgNiA0NS4zMTI1IDYgQyA0NC43MTI1IDYgNDQuMTQ1OTYgNi4xNjkzODk0IDQzLjQ2ODc1IDYuMzc1IEMgNDIuNzkxNTQgNi41ODA2MTA2IDQyLjAzNTU3OSA2LjgzMzk1MjQgNDEuMjUgNy4wOTM3NSBDIDM5LjY3ODg0MyA3LjYxMzM0NTMgMzcuOTcgOC4wOTM3NSAzNyA4LjA5Mzc1IEMgMzYuMDMgOC4wOTM3NSAzNS4zODY2MTYgNy43MzEwNjM0IDM0LjU5Mzc1IDcuMjE4NzUgQyAzMy44MDA4ODQgNi43MDY0MzY2IDMyLjg1IDYgMzEuNSA2IEMgMzAuMTUgNiAyOS4wNDg1MzcgNi42MzgxNDk0IDI4IDcuMTU2MjUgQyAyNi45NTE0NjMgNy42NzQzNTA2IDI1Ljk3IDguMDkzNzUgMjUgOC4wOTM3NSBDIDI0LjAzIDguMDkzNzUgMjMuMzg2NjE2IDcuNzMxMDYzNCAyMi41OTM3NSA3LjIxODc1IEMgMjEuODAwODg0IDYuNzA2NDM2NiAyMC44NSA2IDE5LjUgNiBDIDE4LjE1IDYgMTYuODg4NjAyIDYuNTk2Njc5OCAxNS43MTg3NSA3LjEyNSBDIDE0LjU0ODg5OCA3LjY1MzMyMDIgMTMuNDM4MjM1IDguMDkzNzUgMTMgOC4wOTM3NSBDIDEyLjU2MTc2NSA4LjA5Mzc1IDEwLjcxNDczNyA3LjYxNzUwMTYgOS4wMzEyNSA3LjA5Mzc1IEMgOC4xODk1MDYzIDYuODMxODc0MiA3LjM2MjMyODYgNi41NzkxODMzIDYuNjI1IDYuMzc1IEMgNS44ODc2NzE0IDYuMTcwODE2NyA1LjI4NzUgNiA0LjY4NzUgNiB6IE0gNC42ODc1IDggQyA0Ljc4NzUgOCA1LjQwOTIwMzYgOC4wOTE2ODMgNi4wOTM3NSA4LjI4MTI1IEMgNi43NzgyOTY0IDguNDcwODE2NyA3LjU5MTc0MzcgOC43MzY4NzU4IDguNDM3NSA5IEMgMTAuMTI5MDEzIDkuNTI2MjQ4NCAxMS43MzgyMzUgMTAuMDkzNzUgMTMgMTAuMDkzNzUgQyAxNC4yNjE3NjUgMTAuMDkzNzUgMTUuNDA3MzUyIDkuNDkwNDI5OCAxNi41NjI1IDguOTY4NzUgQyAxNy43MTc2NDggOC40NDcwNzAyIDE4Ljg1IDggMTkuNSA4IEMgMjAuMTUgOCAyMC42OTkxMTYgOC4zMzczMTM0IDIxLjUzMTI1IDguODc1IEMgMjIuMzYzMzg0IDkuNDEyNjg2NiAyMy40NyAxMC4wOTM3NSAyNSAxMC4wOTM3NSBDIDI2LjUzIDEwLjA5Mzc1IDI3Ljc5ODUzNyA5LjQ2OTM5OTQgMjguODc1IDguOTM3NSBDIDI5Ljk1MTQ2MyA4LjQwNTYwMDYgMzAuODUgOCAzMS41IDggQyAzMi4xNSA4IDMyLjY5OTExNiA4LjMzNzMxMzQgMzMuNTMxMjUgOC44NzUgQyAzNC4zNjMzODQgOS40MTI2ODY2IDM1LjQ3IDEwLjA5Mzc1IDM3IDEwLjA5Mzc1IEMgMzguNTMgMTAuMDkzNzUgNDAuMjcxMTU3IDkuNTMwNDA0NyA0MS44NzUgOSBDIDQyLjY3NjkyMSA4LjczNDc5NzYgNDMuNDQyODM1IDguNDY5Mzg5NCA0NC4wNjI1IDguMjgxMjUgQyA0NC42ODIxNjUgOC4wOTMxMTA2IDQ1LjIxMjUgOCA0NS4zMTI1IDggQyA0Ni43NzkxNjcgOCA0OCA5LjE2MDQxNjcgNDggMTAuNTkzNzUgQyA0OCAxMC43MDUyODggNDcuNTk2MjE0IDExLjY0NjUyNCA0Ny4wNjI1IDEyLjYyNSBDIDQ2LjUyODc4NiAxMy42MDM0NzYgNDUuOTA2MjUgMTQuNzExMTExIDQ1LjkwNjI1IDE2IEMgNDUuOTA2MjUgMTcuMjg4ODg5IDQ2LjQ4MzM1MyAxOC42MjUyNTcgNDcgMjAuMTg3NSBDIDQ3LjUxNjY0NyAyMS43NDk3NDMgNDggMjMuNDUgNDggMjUgQyA0OCAyNi41NSA0Ny41MTYzNDIgMjguMzAxMzg3IDQ3IDI5Ljg3NSBDIDQ2LjQ4MzY1OCAzMS40NDg2MTMgNDUuOTA2MjUgMzIuNzM4MjM1IDQ1LjkwNjI1IDM0IEMgNDUuOTA2MjUgMzUuMjYxNzY1IDQ2LjUzMDczNCAzNi4zMjQ5MzUgNDcuMDYyNSAzNy4zMTI1IEMgNDcuNTk0MjY2IDM4LjMwMDA2NSA0OCAzOS4yOTQ3MTIgNDggMzkuNDA2MjUgQyA0OCA0MC44Mzk1ODMgNDYuNzc5MTY3IDQyIDQ1LjMxMjUgNDIgQyA0NS4yMDA1OTUgNDIgNDQuNjE0OTY2IDQxLjg5OTQwOCA0My45Mzc1IDQxLjcxODc1IEMgNDMuMjYwMDM0IDQxLjUzODA5MiA0Mi40MzM4NjMgNDEuMjgyMDMgNDEuNTkzNzUgNDEuMDMxMjUgQyAzOS45MTM1MjMgNDAuNTI5NjkgMzguMjcwMzcgNDAgMzcgNDAgQyAzNS43Mjk2MyA0MCAzNC41ODI2NCA0MC41OTU4NjMgMzMuNDM3NSA0MS4wOTM3NSBDIDMyLjI5MjM2IDQxLjU5MTYzNyAzMS4xNjY2NjcgNDIgMzAuNSA0MiBDIDI5LjgzMzMzMyA0MiAyOS4zMjM4MiA0MS42NzExMzggMjguNSA0MS4xNTYyNSBDIDI3LjY3NjE4IDQwLjY0MTM2MiAyNi41NTY0MSA0MCAyNSA0MCBDIDIzLjQ0MzU5IDQwIDIyLjE2MDQzOSA0MC41ODU4MDMgMjEuMDkzNzUgNDEuMDkzNzUgQyAyMC4wMjcwNjEgNDEuNjAxNjk3IDE5LjE2NjY2NyA0MiAxOC41IDQyIEMgMTcuODMzMzMzIDQyIDE3LjMwMDc0NCA0MS42NjgyNDcgMTYuNDY4NzUgNDEuMTU2MjUgQyAxNS42MzY3NTYgNDAuNjQ0MjUzIDE0LjUxNjY2NyA0MCAxMyA0MCBDIDExLjQ4MzMzMyA0MCA5LjcyODI4MTIgNDAuNTI2MjggOC4xMjUgNDEuMDMxMjUgQyA3LjMyMzM1OTQgNDEuMjgzNzM1IDYuNTg5NDU5OCA0MS41MzkyNjggNS45Njg3NSA0MS43MTg3NSBDIDUuMzQ4MDQwMiA0MS44OTgyMzIgNC43OTk0MDQ4IDQyIDQuNjg3NSA0MiBDIDMuMjIwODMzMyA0MiAyIDQwLjgzOTU4MyAyIDM5LjQwNjI1IEMgMiAzOS4yOTQ3MTIgMi40MDM3ODU3IDM4LjM1MzQ3NiAyLjkzNzUgMzcuMzc1IEMgMy40NzEyMTQzIDM2LjM5NjUyNCA0LjA5Mzc1IDM1LjI4ODg4OSA0LjA5Mzc1IDM0IEMgNC4wOTM3NSAzMi43MTExMTEgMy41MTUyNTU3IDMxLjQzOTc0OSAzIDI5LjkwNjI1IEMgMi40ODQ3NDQzIDI4LjM3Mjc1MSAyIDI2LjY2MDgxMSAyIDI1IEMgMiAyMy4zMzkxODkgMi40ODUwMzkgMjEuNjA3MzgzIDMgMjAuMDYyNSBDIDMuNTE0OTYxIDE4LjUxNzYxNyA0LjA5Mzc1IDE3LjI2MTc2NSA0LjA5Mzc1IDE2IEMgNC4wOTM3NSAxNC43MzgyMzUgMy40NjkyNjYgMTMuNjc1MDY1IDIuOTM3NSAxMi42ODc1IEMgMi40MDU3MzQgMTEuNjk5OTM1IDIgMTAuNzA1Mjg4IDIgMTAuNTkzNzUgQyAyIDkuMTYwNDE2NyAzLjIyMDgzMzMgOCA0LjY4NzUgOCB6IE0gOCAxMiBDIDcuNDc3Nzc3OCAxMiA2LjkzOTUzMDUgMTIuMTg1NDY5IDYuNTYyNSAxMi41NjI1IEMgNi4xODU0Njk1IDEyLjkzOTUzMSA2IDEzLjQ3Nzc3OCA2IDE0IEwgNiAzNiBDIDYgMzYuNTIyMjIyIDYuMTg1NDY5NSAzNy4wNjA0NjkgNi41NjI1IDM3LjQzNzUgQyA2LjkzOTUzMDUgMzcuODE0NTMxIDcuNDc3Nzc3OCAzOCA4IDM4IEwgNDIgMzggQyA0Mi41MjIyMjIgMzggNDMuMDYwNDY5IDM3LjgxNDUzMSA0My40Mzc1IDM3LjQzNzUgQyA0My44MTQ1MzEgMzcuMDYwNDY5IDQ0IDM2LjUyMjIyMiA0NCAzNiBMIDQ0IDE0IEMgNDQgMTMuNDc3Nzc4IDQzLjgxNDUzMSAxMi45Mzk1MzEgNDMuNDM3NSAxMi41NjI1IEMgNDMuMDYwNDY5IDEyLjE4NTQ2OSA0Mi41MjIyMjIgMTIgNDIgMTIgTCA4IDEyIHogTSA4IDE0IEwgNDIgMTQgTCA0MiAzNiBMIDggMzYgTCA4IDE0IHoiIGNvbG9yPSIjMDAwIiBvdmVyZmxvdz0idmlzaWJsZSIgZW5hYmxlLWJhY2tncm91bmQ9ImFjY3VtdWxhdGUiIGZvbnQtZmFtaWx5PSJCaXRzdHJlYW0gVmVyYSBTYW5zIj48L3BhdGg+PC9zdmc+);
     }
-    .tabbar > .image.selected > label {
+    .tabbar > .preview.selected > label {
       background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjAiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgc3R5bGU9Im51bGwiIGZpbGw9IiMwMDdhZmYiID4gICAgPHBhdGggZD0iTTUwLDI1YzAtMi4yMDMtMC43NTQtNC40MzMtMS4zNTktNi4yMjRDNDguMjYsMTcuNjUsNDcuOSwxNi41ODcsNDcuOSwxNmMwLTAuNzE3LDAuNTYxLTEuNzM4LDEuMDU1LTIuNjQgQzQ5LjUxNiwxMi4zMzcsNTAsMTEuNDU0LDUwLDEwLjZDNTAsOC4wNjMsNDcuODkyLDYsNDUuMyw2Yy0wLjcyNiwwLTEuNzU3LDAuMzMzLTMuMzc5LDAuODc2QzQwLjI5Myw3LjQyMiwzOC4yNjcsOC4xLDM3LDguMSBjLTEuMDIzLDAtMS43MjEtMC40NTMtMi41MjgtMC45NzdDMzMuNjYsNi41OTcsMzIuNzQsNiwzMS41LDZjLTEuMTc5LDAtMi4yNzIsMC41NDItMy4zMywxLjA2NkMyNy4xNDYsNy41NzUsMjYuMDg1LDguMSwyNSw4LjEgYy0xLjAyMywwLTEuNzIxLTAuNDUzLTIuNTI4LTAuOTc3QzIxLjY2LDYuNTk3LDIwLjc0LDYsMTkuNSw2Yy0xLjI1NiwwLTIuNjA4LDAuNjExLTMuOTE2LDEuMjAzQzE0LjYwOSw3LjY0NCwxMy42LDguMSwxMyw4LjEgYy0wLjczOSwwLTIuNjY0LTAuNi00LjIxLTEuMDgxQzYuNzYxLDYuMzg3LDUuNDc5LDYsNC43LDZDMi4xMDgsNiwwLDguMDYzLDAsMTAuNmMwLDAuODU5LDAuNTE3LDEuODE2LDEuMDY1LDIuODMgQzEuNTUsMTQuMzI4LDIuMSwxNS4zNDYsMi4xLDE2YzAsMC41Mi0wLjMzOCwxLjUwNC0wLjY5NywyLjU0N0MwLjc3OCwyMC4zNjUsMCwyMi42MjcsMCwyNWMwLDIuMzQ4LDAuNzY3LDQuNTY3LDEuMzgzLDYuMzUxIEMxLjc1MSwzMi40MTksMi4xLDMzLjQyOSwyLjEsMzRjMCwwLjcxNy0wLjU2LDEuNzM4LTEuMDU0LDIuNjM5QzAuNTA4LDM3LjYyLDAsMzguNTQ3LDAsMzkuNEMwLDQxLjkzNywyLjEwOCw0NCw0LjcsNDQgYzAuNzE4LDAsMS43NDctMC4zMTYsMy4zNjYtMC44MzNDOS42OTcsNDIuNjQ3LDExLjcyNiw0MiwxMyw0MmMxLjAzNiwwLDEuNzM2LDAuNDMzLDIuNTQ3LDAuOTM1QzE2LjM1NSw0My40MzQsMTcuMjcxLDQ0LDE4LjUsNDQgYzEuMTYyLDAsMi4yMjQtMC41MDgsMy4yNTEtMWMxLjAyOC0wLjQ5MSwyLjA5MS0xLDMuMjQ5LTFjMS4wOTcsMCwxLjc5MywwLjQzOCwyLjU5OSwwLjk0NEMyOC4zODYsNDMuNDM5LDI5LjI3Nyw0NCwzMC41LDQ0IGMxLjIzNCwwLDIuNTQ2LTAuNTcsMy44MTQtMS4xMjJDMzUuMzA3LDQyLjQ0NiwzNi4zMzIsNDIsMzcsNDJjMC44MTEsMCwyLjc2MSwwLjU4Myw0LjMyOCwxLjA1MkM0My4yOTMsNDMuNjQsNDQuNTM2LDQ0LDQ1LjMsNDQgYzIuNTkyLDAsNC43LTIuMDYzLDQuNy00LjZjMC0wLjg1OS0wLjUxOC0xLjgxNy0xLjA2NC0yLjgzMUM0OC40NSwzNS42NzIsNDcuOSwzNC42NTQsNDcuOSwzNGMwLTAuNTM0LDAuMzUtMS41NzMsMC43Mi0yLjY3MiBDNDkuMjM0LDI5LjUsNTAsMjcuMjI3LDUwLDI1eiBNNDMsMzZjMCwwLjYtMC40LDEtMSwxSDhjLTAuNiwwLTEtMC40LTEtMVYxNGMwLTAuNiwwLjQtMSwxLTFoMzRjMC42LDAsMSwwLjQsMSwxVjM2eiI+PC9wYXRoPjwvc3ZnPg==);
     }  
     .tabbar > .share > label {
@@ -388,7 +293,104 @@
   
     <script>
       
-
+      $(window).load(function() {
+        
+        $( "button.preview" ).on( "click", function() {
+        
+          // get values
+          var line1 = "\u201C" + "Managing our cloud is a";
+          var line2 = "SEAMLESS";
+          var line3 = "experience, no new expertise required." + "\u201D";
+          var redLow = 0;
+          var redHigh = 50;
+          var greenLow = 200;
+          var greenHigh = 255;
+          var blueLow = 0;
+          var blueHigh = 50;             
+          
+          // http://www.patrick-wied.at/blog/how-to-create-transparency-in-images-with-html5canvas
+          // get the image
+          var img = document.getElementById("smallImage");
+          // create and customize the canvas
+          var canvas = document.createElement("canvas");
+          canvas.width = 824;
+          canvas.height = 824;
+          canvas.id = "test1";
+          // get the context
+          var ctx = canvas.getContext("2d");
+          // draw the image into the canvas
+          ctx.drawImage(img, 0, 0);
+          
+          // get the image data object
+          var image = ctx.getImageData(0, 0, 824, 824);
+          // get the image data values
+          var imageData = image.data,
+          length = imageData.length;
+          // set every fourth value to 0
+          for(var i=3; i < length; i+=4){
+            if ( (imageData[i-3] >= redLow && imageData[i-3] <= redHigh) && (imageData[i-2] >= greenLow && imageData[i-2] <= greenHigh) && (imageData[i-1] >= blueLow && imageData[i-1] <= blueHigh) ) {
+              imageData[i] = 0;
+            }
+          }
+          // after the manipulation, reset the data
+          image.data = imageData;
+          // and put the imagedata back to the canvas
+          ctx.putImageData(image, 0, 0);
+          img = canvas.toDataURL();
+          
+          c = Caman("#photo2", img, function () {
+            this.resize( {width: 824, height: 824} );
+            this.greyscale();
+            this.colorize("#003d79", 40);
+            this.contrast(15);
+            this.render();            
+          });
+          
+          //console.log(canvas.toDataURL());
+          
+          Caman.Event.listen(c, "processComplete", function (job) {
+            if (job.name=='contrast') {          
+              
+              var canvas = document.getElementById("composite");
+              canvas.width = 800;
+              canvas.height = 550;
+              var ctx = canvas.getContext("2d");
+              var background = new Image();
+              background.src = "img/background.jpg";
+              var logo = new Image();
+              logo.src = "img/vmware.png";          
+              var head = new Image();
+              var head = document.getElementById("photo2");
+              
+              // draw background image;
+              background.onload = function(){
+                ctx.drawImage(background, 0, 0);
+                // draw head
+                ctx.globalCompositeOperation = "source-over";
+                ctx.drawImage(head, 275, -265);
+                // draw text
+                ctx.font = "normal 25px 'Gotham-Light'";
+                ctx.fillStyle = "#ffffff";
+                ctx.fillText(line1, 35, 195);
+                // draw text
+                ctx.font = "bold 106px 'Gotham-Ultra'";
+                ctx.fillStyle = "#ffffff";
+                ctx.fillText(line2, 35, 285);
+                // draw text
+                ctx.font = "normal 25px 'Gotham-Light'";
+                ctx.fillStyle = "#ffffff";
+                ctx.fillText(line3,35,314);
+                // draw logo
+                ctx.drawImage(logo, 35, 503);                
+              }
+              
+            }
+    
+          });
+          
+        });
+        
+      });
 
     </script>  
   
