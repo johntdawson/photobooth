@@ -35,6 +35,9 @@
       // Uncomment to view the base64-encoded image data
       // console.log(imageData);
   
+      // Remove any previous image
+      $("smallImage").remove();  
+  
       // Get image handle
       //
       var smallImage = document.getElementById('smallImage');
@@ -73,6 +76,7 @@
     // A button will call this function
     //
     function capturePhotoEdit() {
+      
       // Take picture using device camera, allow edit, and retrieve image as base64-encoded string
       navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
         destinationType: destinationType.DATA_URL });
@@ -317,14 +321,14 @@
           var canvas = document.createElement("canvas");
           canvas.width = 824;
           canvas.height = 824;
-          canvas.id = "test1";
+          canvas.id = "image1";
           // get the context
-          var ctx = canvas.getContext("2d");
+          var context1 = canvas.getContext("2d");
           // draw the image into the canvas
-          ctx.drawImage(img, 0, 0);
+          context1.drawImage(img, 0, 0);
           
           // get the image data object
-          var image = ctx.getImageData(0, 0, 824, 824);
+          var image = context1.getImageData(0, 0, 824, 824);
           // get the image data values
           var imageData = image.data,
           length = imageData.length;
@@ -337,7 +341,7 @@
           // after the manipulation, reset the data
           image.data = imageData;
           // and put the imagedata back to the canvas
-          ctx.putImageData(image, 0, 0);
+          context1.putImageData(image, 0, 0);
           img = canvas.toDataURL();
           
           c = Caman("#photo2", img, function () {
@@ -349,7 +353,7 @@
             this.render();            
           });
           
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          context1.clearRect(0, 0, canvas.width, canvas.height);
           
           //console.log(canvas.toDataURL());
           
