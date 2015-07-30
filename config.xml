@@ -7,7 +7,7 @@
     <author email="john@whmcreative.com" href="http://www.whmcreative.com">
         VMware Photo Booth
     </author>
-    <content src="poc.html" />
+    <content src="index.html" />
     <preference name="permissions" value="none" />
     <preference name="orientation" value="default" />
     <preference name="target-device" value="universal" />
