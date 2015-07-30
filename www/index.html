@@ -231,6 +231,7 @@
     <section>
       <h2>Photo</h2>
       <button onclick="capturePhotoEdit();">Capture Photo</button>
+      <img id="photo1" src="img/photo.jpg"/>
       <img style="display:none;width:600px;height:600px;" id="smallImage" src="" />
       <img style="display:none;" id="largeImage" src="" />      
     </section>
@@ -283,7 +284,7 @@
   </nav>
   <article id="preview" class="next">
     <section>
-    <img id="photo1" src="img/photo.jpg"/>
+    
     
     <canvas id="photo2"></canvas>
     
@@ -296,7 +297,11 @@
       $(window).load(function() {
         
         $( "button.preview" ).on( "click", function() {
-        
+          
+          if (typeof ctx !== 'undefined') {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+          
           // get values
           var line1 = "\u201C" + "Managing our cloud is a";
           var line2 = "SEAMLESS";
@@ -339,6 +344,7 @@
           img = canvas.toDataURL();
           
           c = Caman("#photo2", img, function () {
+            this.revert(false);
             this.resize( {width: 824, height: 824} );
             this.greyscale();
             this.colorize("#003d79", 40);
