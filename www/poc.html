@@ -8,7 +8,6 @@
 
     <title>VMWare</title>
 
-    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/caman.full.min.js"></script>
     
     <style>
@@ -29,16 +28,6 @@
 
   <body>
     
-    <form id="form" style="font-family: arial; font-size: 10px;">
-      <input id="line1" type="text" placeholder="Line 1" value="Managing our cloud is a" style="width:400px; font-family:'Gotham-Light';" /><br/>
-      <input id="line2" type="text" placeholder="Line 2" value="SEAMLESS" style="width:400px; font-family:'Gotham-Ultra';" /><br/>
-      <input id="line3" type="text" placeholder="Line 3" value="experience, no new expertise required." style="width:400px; font-family:'Gotham-Light';" /><br/><br/>
-      R: <input id="redLow" type="text" placeholder="Low" value="0" style="width:30px;" /> <input id="redHigh" type="text" placeholder="High" value="50" style="width:30px;" />&nbsp;&nbsp;
-      G: <input id="greenLow" type="text" placeholder="Low" value="200" style="width:30px;" /> <input id="greenHigh" type="text" placeholder="High" value="255" style="width:30px;" />&nbsp;&nbsp;
-      B: <input id="blueLow" type="text" placeholder="Low" value="0" style="width:30px;" /> <input id="blueHigh" type="text" placeholder="High" value="50" style="width:30px;" /><br/><br/>
-      <input id="render" type="submit" value="Render" /><br/><br/>
-    </form>
-    
     <img id="photo" src="img/photo.jpg"/>
     
     <canvas id="photo2"></canvas>
@@ -49,22 +38,16 @@
       
       $(window).load(function() {
         
-        $( "#form" ).submit(function(event) {
-          
-          $("#render").remove();
-        
-          event.preventDefault();
-          
           // get values
-          var line1 = "\u201C" + $("#line1").val();
-          var line2 = $("#line2").val();
-          var line3 = $("#line3").val() + "\u201D";
-          var redLow = $("#redLow").val();
-          var redHigh = $("#redHigh").val();
-          var greenLow = $("#greenLow").val();
-          var greenHigh = $("#greenHigh").val();
-          var blueLow = $("#blueLow").val();
-          var blueHigh = $("#blueHigh").val();             
+          var line1 = "\u201C" + "Managing our cloud is a";
+          var line2 = "SEAMLESS";
+          var line3 = "experience, no new expertise required." + "\u201D";
+          var redLow = 0;
+          var redHigh = 50;
+          var greenLow = 200;
+          var greenHigh = 255;
+          var blueLow = 0;
+          var blueHigh = 50;             
           
           // http://www.patrick-wied.at/blog/how-to-create-transparency-in-images-with-html5canvas
           // get the image
@@ -145,8 +128,6 @@
             }
     
           });
-        
-        });
         
       });
 
