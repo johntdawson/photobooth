@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>VMWare</title>
+
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/caman.full.min.js"></script>
+    
+    <style>
+      @font-face {
+      font-family: Gotham-Light;
+      font-weight: normal;
+      src: url("fonts/Gotham-Light.otf") format("opentype");
+      }
+       
+      @font-face {
+      font-family: Gotham-Ultra;
+      font-weight: bold;
+      src: url("fonts/Gotham-Ultra.otf") format("opentype");
+      }      
+    </style>
+    
+  </head>
+
+  <body>
+    
+    <form id="form" style="font-family: arial; font-size: 10px;">
+      <input id="line1" type="text" placeholder="Line 1" value="Managing our cloud is a" style="width:400px; font-family:'Gotham-Light';" /><br/>
+      <input id="line2" type="text" placeholder="Line 2" value="SEAMLESS" style="width:400px; font-family:'Gotham-Ultra';" /><br/>
+      <input id="line3" type="text" placeholder="Line 3" value="experience, no new expertise required." style="width:400px; font-family:'Gotham-Light';" /><br/><br/>
+      R: <input id="redLow" type="text" placeholder="Low" value="0" style="width:30px;" /> <input id="redHigh" type="text" placeholder="High" value="50" style="width:30px;" />&nbsp;&nbsp;
+      G: <input id="greenLow" type="text" placeholder="Low" value="200" style="width:30px;" /> <input id="greenHigh" type="text" placeholder="High" value="255" style="width:30px;" />&nbsp;&nbsp;
+      B: <input id="blueLow" type="text" placeholder="Low" value="0" style="width:30px;" /> <input id="blueHigh" type="text" placeholder="High" value="50" style="width:30px;" /><br/><br/>
+      <input id="render" type="submit" value="Render" /><br/><br/>
+    </form>
+    
+    <img id="photo" src="img/photo.jpg"/>
+    
+    <canvas id="photo2"></canvas>
+    
+    <canvas id="composite"></canvas>
+    
+    <script>
+      
+      $(window).load(function() {
+        
+        $( "#form" ).submit(function(event) {
+          
+          $("#render").remove();
+        
+          event.preventDefault();
+          
+          // get values
+          var line1 = "\u201C" + $("#line1").val();
+          var line2 = $("#line2").val();
+          var line3 = $("#line3").val() + "\u201D";
+          var redLow = $("#redLow").val();
+          var redHigh = $("#redHigh").val();
+          var greenLow = $("#greenLow").val();
+          var greenHigh = $("#greenHigh").val();
+          var blueLow = $("#blueLow").val();
+          var blueHigh = $("#blueHigh").val();             
+          
+          // http://www.patrick-wied.at/blog/how-to-create-transparency-in-images-with-html5canvas
+          // get the image
+          var img = document.getElementById("photo");
+          // create and customize the canvas
+          var canvas = document.createElement("canvas");
+          canvas.width = 824;
+          canvas.height = 824;
+          canvas.id = "test1";
+          // get the context
+          var ctx = canvas.getContext("2d");
+          // draw the image into the canvas
+          ctx.drawImage(img, 0, 0);
+          
+          // get the image data object
+          var image = ctx.getImageData(0, 0, 824, 824);
+          // get the image data values
+          var imageData = image.data,
+          length = imageData.length;
+          // set every fourth value to 0
+          for(var i=3; i < length; i+=4){
+            if ( (imageData[i-3] >= redLow && imageData[i-3] <= redHigh) && (imageData[i-2] >= greenLow && imageData[i-2] <= greenHigh) && (imageData[i-1] >= blueLow && imageData[i-1] <= blueHigh) ) {
+              imageData[i] = 0;
+            }
+          }
+          // after the manipulation, reset the data
+          image.data = imageData;
+          // and put the imagedata back to the canvas
+          ctx.putImageData(image, 0, 0);
+          img = canvas.toDataURL();
+          
+          c = Caman("#photo2", img, function () {
+            this.resize( {width: 824, height: 824} );
+            this.greyscale();
+            this.colorize("#003d79", 40);
+            this.contrast(15);
+            this.render();            
+          });
+          
+          console.log(canvas.toDataURL());
+          
+          Caman.Event.listen(c, "processComplete", function (job) {
+            if (job.name=='contrast') {          
+              
+              var canvas = document.getElementById("composite");
+              canvas.width = 800;
+              canvas.height = 550;
+              var ctx = canvas.getContext("2d");
+              var background = new Image();
+              background.src = "img/background.jpg";
+              var logo = new Image();
+              logo.src = "img/vmware.png";          
+              var head = new Image();
+              var head = document.getElementById("photo2");
+              
+              // draw background image;
+              background.onload = function(){
+                ctx.drawImage(background, 0, 0);
+                // draw head
+                ctx.globalCompositeOperation = "source-over";
+                ctx.drawImage(head, 275, -265);
+                // draw text
+                ctx.font = "normal 25px 'Gotham-Light'";
+                ctx.fillStyle = "#ffffff";
+                ctx.fillText(line1, 35, 195);
+                // draw text
+                ctx.font = "bold 106px 'Gotham-Ultra'";
+                ctx.fillStyle = "#ffffff";
+                ctx.fillText(line2, 35, 285);
+                // draw text
+                ctx.font = "normal 25px 'Gotham-Light'";
+                ctx.fillStyle = "#ffffff";
+                ctx.fillText(line3,35,314);
+                // draw logo
+                ctx.drawImage(logo, 35, 503);                
+              }
+              
+            }
+    
+          });
+        
+        });
+        
+      });
+
+    </script>
+    
+  </body>
+</html>
